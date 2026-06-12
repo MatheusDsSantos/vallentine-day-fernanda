@@ -126,8 +126,8 @@
        MINI-PLAYER DE MÚSICA
        ============================================================ -->
   <div id="musicPlayer" class="music-player">
-    <!-- iFrame do YouTube (invisível) -->
-    <div id="ytPlayerWrapper" class="hidden">
+    <!-- iFrame do YouTube — fora da tela, mas NÃO display:none -->
+    <div id="ytPlayerWrapper" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
       <div id="ytPlayer"></div>
     </div>
 
@@ -216,12 +216,10 @@
         <p class="font-script text-rose-400 text-2xl mb-2">uma surpresa para você</p>
         <h3 class="font-serif font-semibold text-rose-800 text-2xl mb-4">
           <!-- ✏️  Edite o título da surpresa -->
-          Jantar à luz de velas 🕯️
+          Um milhão de beijos
         </h3>
         <p class="font-serif italic text-rose-600 text-sm leading-relaxed">
-          <!-- ✏️  Edite a mensagem especial aqui -->
-          Você merece o mundo, mas por enquanto quero te oferecer uma noite inesquecível.
-          Reserve o dia <strong>XX de Junho</strong> — vou te surpreender do jeito que você merece.
+          Você merece o mundo, mas como eu não posso te dar isso, quero te dar cada pedacinho do meu coração.
           <br/><br/>
           Com todo o meu amor, <em>sempre</em>.
         </p>

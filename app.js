@@ -19,11 +19,12 @@ const START_DATE = new Date(2023, 1, 14, 19, 30, 0);
 const TIMELINE_MOMENTS = [
   {
     // ── Momento 1 ──────────────────────────────────────────
-    date:        "14 de Fevereiro de 2023",
-    location:    "Parque da Cidade",
+    date:        "2022",
+    location:    "Parque de Içara",
     title:       "O Nosso Primeiro Encontro",
-    text:        "Aquele dia ficou guardado para sempre no meu coração. Você chegou com aquele sorriso que eu ainda não consigo descrever com palavras. Sabia que era algo especial.",
-    photo:       null,          // ✏️  ex: "assets/foto1.jpg"
+    text:        "Aquele dia ficou guardado para sempre no meu coração, era toda timida e mal tinha coragem de me abraçar, me apaixonei facilmente por você.",
+    photo:       "assets/primeiro_encontro.jpg",
+    photoPosition: "center center",
     emoji:       "🌸",
     side:        "left",
     // ── Música ─────────────────────────────────────────────
@@ -34,11 +35,12 @@ const TIMELINE_MOMENTS = [
   },
   {
     // ── Momento 2 ──────────────────────────────────────────
-    date:        "20 de Março de 2023",
-    location:    "Restaurante Bella Vista",
-    title:       "O Jantar que Mudou Tudo",
-    text:        "Foi nessa noite que eu percebi que queria todos os jantares da minha vida ao seu lado. A conversa nunca acabou, e eu não queria que acabasse.",
-    photo:       null,          // ✏️  ex: "assets/foto2.jpg"
+    date:        "2022 - 2026",
+    location:    "shopping das nações",
+    title:       "Nossos passeios no shopping",
+    text:        "Eu amo esses passeios contigo, é divertido, leve, e a gente sempre acaba rindo de algo bobo. São momentos simples, mas que eu guardo com muito carinho.",
+    photo:       "assets/nossos_PasseiosNoShopping.jpg",
+    photoPosition: "center 35%",
     emoji:       "🍷",
     side:        "right",
     // ── Música ─────────────────────────────────────────────
@@ -49,11 +51,12 @@ const TIMELINE_MOMENTS = [
   },
   {
     // ── Momento 3 ──────────────────────────────────────────
-    date:        "01 de Maio de 2023",
-    location:    "Praia do Sol",
-    title:       "Nossa Primeira Viagem",
-    text:        "O pôr do sol nunca foi tão bonito quanto naquele dia, com você do meu lado, os pés na areia. Guardo essa imagem como um dos maiores presentes que a vida já me deu.",
-    photo:       null,          // ✏️  ex: "assets/foto3.jpg"
+    date:        " 2023",
+    location:    "Praia de Torres, SC",
+    title:       "Nossa Primeira Viagem mais longe",
+    text:        "A luz do sol nunca esteve tão linda quanto naquele dia, ou era apenas você me iluminando.",
+    photo:       "assets/nossa_viagem_pra_torresSC.jpg",
+    photoPosition: "center center",
     emoji:       "🌅",
     side:        "left",
     // ── Música ─────────────────────────────────────────────
@@ -64,11 +67,12 @@ const TIMELINE_MOMENTS = [
   },
   {
     // ── Momento 4 ──────────────────────────────────────────
-    date:        "25 de Dezembro de 2023",
-    location:    "Casa da Família",
-    title:       "Nosso Primeiro Natal Juntos",
-    text:        "Apresentar você para a família foi o melhor presente que eu poderia dar a eles, e a mim mesmo. Você já é parte da nossa história, e eu amo demais isso.",
-    photo:       null,          // ✏️  ex: "assets/foto4.jpg"
+    date:        "2024",
+    location:    "Formatura do Ensino Médio",
+    title:       "Sua formatura do ensino médio",
+    text:        "Eu me senti orgulhoso de você naquele dia, e não era só por causa de você estar tão linda a ponto de eu ficar tímido ao ficar junto.",
+    photo:       "assets/suaFormaturaEnsinoMedio.jpg",
+    photoPosition: "center center",
     emoji:       "🎄",
     side:        "right",
     // ── Música ─────────────────────────────────────────────
@@ -79,11 +83,12 @@ const TIMELINE_MOMENTS = [
   },
   {
     // ── Momento 5 ──────────────────────────────────────────
-    date:        "14 de Fevereiro de 2024",
-    location:    "Em casa, com champanhe e Netflix",
-    title:       "Nosso Primeiro Aniversário",
-    text:        "Um ano inteiro ao seu lado, e cada dia valeu mais do que o anterior. Você me ensina a amar de um jeito que eu não sabia que existia.",
-    photo:       null,          // ✏️  ex: "assets/foto5.jpg"
+    date:        "2025",
+    location:    "A mais bela da festa",
+    title:       "Festa de formatura da nicoli",
+    text:        "Essa foto me impressiona pois consigo ver a princesa que eu tenho ao meu lado, e o quanto eu sou sortudo por ter você comigo.",
+    photo:       "assets/AquiEstamosLindos_naFormatura-2.jpg",
+    photoPosition: "center center",
     emoji:       "🥂",
     side:        "left",
     // ── Música ─────────────────────────────────────────────
@@ -166,17 +171,23 @@ setInterval(updateCounter, 1000);
 /* ══════════════════════════════════════════════════════════
    PLAYER DE MÚSICA — YouTube IFrame API
    ══════════════════════════════════════════════════════════ */
-let ytPlayer      = null;
-let isPlaying     = false;
-let progressTimer = null;
-let currentMoment = null;  // momento cuja música está tocando
+let ytPlayer        = null;
+let ytReady         = false;   // true assim que onPlayerReady dispara
+let isPlaying       = false;
+let progressTimer   = null;
+let currentMoment   = null;    // momento cuja música está tocando
+let pendingMoment   = null;    // guardado se player ainda não estava pronto
 
 // Chamado automaticamente pela API do YouTube quando carrega
 window.onYouTubeIframeAPIReady = function () {
+  // Inicializa com o primeiro vídeo (sem autoplay) para garantir
+  // que o player cria o iframe corretamente antes do primeiro clique
+  const firstId = TIMELINE_MOMENTS[0]?.youtubeId || "NmSkiFSX3vE";
+
   ytPlayer = new YT.Player("ytPlayer", {
-    height: "0",
-    width:  "0",
-    videoId: "",          // começa sem vídeo; carrega ao abrir foto
+    height:  "1",
+    width:   "1",
+    videoId: firstId,
     playerVars: {
       autoplay:       0,
       controls:       0,
@@ -184,20 +195,28 @@ window.onYouTubeIframeAPIReady = function () {
       fs:             0,
       modestbranding: 1,
       rel:            0,
-      origin:         window.location.origin,
+      // NÃO passa origin — em file:// retorna "null" e quebra a API
     },
     events: {
       onReady:       onPlayerReady,
       onStateChange: onPlayerStateChange,
+      onError:       onPlayerError,
     },
   });
 };
 
 function onPlayerReady() {
   // Player pronto — aguarda o primeiro clique em uma foto
+  ytReady = true;
   document.getElementById("songTitle").textContent  = "Clique em uma foto";
   document.getElementById("songArtist").textContent = "para tocar a música ♥";
   ytPlayer.setVolume(70);
+
+  if (pendingMoment) {
+    const moment = pendingMoment;
+    pendingMoment = null;
+    playMomentSong(moment);
+  }
 }
 
 function onPlayerStateChange(event) {
@@ -219,9 +238,26 @@ function onPlayerStateChange(event) {
   }
 }
 
+function onPlayerError() {
+  isPlaying = false;
+  document.getElementById("vinyl").classList.remove("playing");
+  document.getElementById("iconPlay").classList.remove("hidden");
+  document.getElementById("iconPause").classList.add("hidden");
+  document.getElementById("songTitle").textContent = "Música indisponível";
+  document.getElementById("songArtist").textContent = "verifique o link do YouTube";
+  stopProgressUpdate();
+}
+
 // Carrega a música do momento no refrão e toca
 function playMomentSong(moment) {
-  if (!ytPlayer || !moment.youtubeId) return;
+  if (!moment?.youtubeId) return;
+  if (!ytPlayer || !ytReady) {
+    pendingMoment = moment;
+    document.getElementById("songTitle").textContent  = moment.songTitle;
+    document.getElementById("songArtist").textContent = "preparando a música...";
+    return;
+  }
+
   currentMoment = moment;
 
   document.getElementById("songTitle").textContent  = moment.songTitle;
@@ -302,13 +338,20 @@ function buildTimeline() {
 
     // Foto clicável (ou placeholder com emoji)
     const photoHTML = m.photo
-      ? `<img
-           src="${m.photo}"
-           alt="${m.title}"
-           class="card-photo card-photo-clickable"
+      ? `<div
+           class="card-photo-frame card-photo-clickable"
            data-index="${i}"
-           loading="lazy"
-         />`
+           style="--photo-url: url('${m.photo}')"
+           title="Clique para ouvir a música ♥"
+         >
+           <img
+             src="${m.photo}"
+             alt="${m.title}"
+             class="card-photo"
+             style="object-position: ${m.photoPosition || "center center"}"
+             loading="lazy"
+           />
+         </div>`
       : `<div
            class="card-photo-placeholder card-photo-clickable"
            data-index="${i}"
