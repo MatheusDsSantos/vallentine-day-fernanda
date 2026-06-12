@@ -455,9 +455,164 @@ html { scroll-behavior: smooth; }
 }
 
 /* ══════════════════════════════════════════════════════════
-   CORAÇÕES FLUTUANTES (Canvas)
+   BOTÃO DE MÚSICA NO CARD DA TIMELINE
    ══════════════════════════════════════════════════════════ */
-/* O canvas em si é estilizado inline via JS / Tailwind */
+.card-photo-clickable {
+  cursor: pointer;
+  position: relative;
+}
+.card-photo-clickable::after {
+  content: "♪";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  background: rgba(157, 23, 77, 0);
+  transition: background .25s;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.card-photo-clickable:hover::after {
+  background: rgba(157, 23, 77, .35);
+}
+
+.card-play-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  background: #FFF1F2;
+  border: 1px solid #FBCFE8;
+  border-radius: 99px;
+  padding: 5px 12px;
+  font-family: Inter, sans-serif;
+  font-size: .7rem;
+  color: #BE185D;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.card-play-hint:hover { background: #FCE7F3; border-color: #F9A8D4; }
+.card-play-artist { color: #F9A8D4; }
+
+/* ══════════════════════════════════════════════════════════
+   LIGHTBOX — FOTO AMPLIADA COM MÚSICA
+   ══════════════════════════════════════════════════════════ */
+#lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(67, 0, 28, 0);
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transition: background .3s ease, backdrop-filter .3s ease;
+}
+#lightbox.lb-visible {
+  background: rgba(67, 0, 28, .65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.lb-box {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 24px 80px rgba(157, 23, 77, .3);
+  transform: scale(.92) translateY(16px);
+  opacity: 0;
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+}
+#lightbox.lb-visible .lb-box {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Foto dentro do lightbox */
+#lbPhoto {
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+#lbPlaceholder {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, #FCE7F3, #FBCFE8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+}
+
+/* Rodapé do lightbox */
+.lb-footer {
+  padding: 18px 20px;
+}
+.lb-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #9D174D;
+  margin-bottom: 2px;
+}
+.lb-date {
+  font-size: .7rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #F9A8D4;
+  margin-bottom: 10px;
+}
+.lb-song-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF1F2;
+  border: 1px solid #FBCFE8;
+  border-radius: 99px;
+  padding: 5px 14px;
+  font-family: Inter, sans-serif;
+  font-size: .72rem;
+  color: #BE185D;
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(190,24,93,.15); }
+  50%       { box-shadow: 0 0 0 6px rgba(190,24,93,0); }
+}
+
+/* Botão fechar */
+#lbClose {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid #FBCFE8;
+  color: #BE185D;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .2s;
+  z-index: 10;
+}
+#lbClose:hover { background: #FCE7F3; transform: scale(1.1); }
 
 /* ══════════════════════════════════════════════════════════
    UTILITÁRIOS

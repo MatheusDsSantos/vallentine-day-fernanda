@@ -238,6 +238,27 @@
     Feito com cada pedaço do meu coração · <span id="footerYear"></span>
   </footer>
 
+  <!-- ============================================================
+       LIGHTBOX — Foto ampliada + música no refrão
+       ============================================================ -->
+  <div id="lightbox" class="hidden" role="dialog" aria-modal="true">
+    <div class="lb-box">
+      <!-- Botão fechar -->
+      <button id="lbClose" aria-label="fechar">✕</button>
+
+      <!-- Foto ou emoji placeholder -->
+      <img id="lbPhoto" src="" alt="" class="hidden" />
+      <div id="lbPlaceholder" class="hidden"></div>
+
+      <!-- Info da memória -->
+      <div class="lb-footer">
+        <h3 id="lbTitle" class="lb-title"></h3>
+        <p  id="lbDate"  class="lb-date"></p>
+        <span id="lbSong" class="lb-song-badge">♪ carregando…</span>
+      </div>
+    </div>
+  </div>
+
   <!-- YouTube IFrame API -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <!-- App principal -->
