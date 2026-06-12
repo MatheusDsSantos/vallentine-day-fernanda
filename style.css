@@ -1,0 +1,465 @@
+/* ============================================================
+   style.css — Nossa História ♥
+   Animações, componentes e tudo que o Tailwind não alcança.
+   ============================================================ */
+
+/* ── Reset suave ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* ── Scrollbar fofinha ────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #FFF1F2; }
+::-webkit-scrollbar-thumb { background: #F9A8D4; border-radius: 99px; }
+
+/* ══════════════════════════════════════════════════════════
+   HERO SECTION
+   ══════════════════════════════════════════════════════════ */
+.hero-section {
+  background: linear-gradient(160deg, #FFF1F2 0%, #FCE7F3 40%, #FBCFE8 100%);
+}
+
+/* Pétalas decorativas de fundo */
+.petal {
+  position: absolute;
+  font-size: 1.5rem;
+  color: #FBCFE8;
+  animation: floatPetal 8s ease-in-out infinite;
+  user-select: none;
+  pointer-events: none;
+}
+.petal-1 { top: 10%; left:  8%; animation-delay: 0s;   font-size: 1.2rem; }
+.petal-2 { top: 20%; right: 10%; animation-delay: 1.5s; font-size: 2rem;   }
+.petal-3 { top: 70%; left:  5%; animation-delay: 3s;   font-size: 1.8rem; }
+.petal-4 { top: 80%; right:  8%; animation-delay: 4.5s; font-size: 1rem;   }
+.petal-5 { top: 50%; left: 50%; animation-delay: 2s;   font-size: 0.9rem; opacity: .5; }
+
+@keyframes floatPetal {
+  0%, 100% { transform: translateY(0) rotate(0deg);   opacity: .6; }
+  50%       { transform: translateY(-18px) rotate(12deg); opacity: 1;  }
+}
+
+/* Fade-in + subida (usado na hero) */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(28px);
+  animation: fadeInUp .8s ease forwards;
+}
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Seta de scroll */
+.scroll-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounceY 2s ease-in-out infinite;
+}
+@keyframes bounceY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+/* ── Contador ─────────────────────────────────────────────── */
+.counter-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 52px;
+}
+.counter-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #9D174D;
+  transition: transform .15s ease;
+}
+.counter-number.tick {
+  transform: scale(1.15);
+}
+.counter-label {
+  font-family: Inter, sans-serif;
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #F9A8D4;
+  margin-top: 2px;
+}
+.counter-sep {
+  font-size: 2rem;
+  color: #FBCFE8;
+  align-self: flex-end;
+  padding-bottom: 6px;
+  line-height: 1;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MINI PLAYER DE MÚSICA
+   ══════════════════════════════════════════════════════════ */
+.music-player {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, .85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid #FBCFE8;
+  border-radius: 20px;
+  padding: 10px 16px 10px 10px;
+  box-shadow: 0 8px 32px rgba(157, 23, 77, .12);
+  max-width: 280px;
+  width: calc(100vw - 32px);
+}
+
+/* Disco de vinil */
+.vinyl-disc {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #9D174D 0deg 40deg,
+    #BE185D 40deg 80deg,
+    #831843 80deg 120deg,
+    #9D174D 120deg 160deg,
+    #BE185D 160deg 200deg,
+    #831843 200deg 240deg,
+    #9D174D 240deg 280deg,
+    #BE185D 280deg 320deg,
+    #831843 320deg 360deg
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spinVinyl 4s linear infinite paused;
+  box-shadow: 0 2px 12px rgba(157,23,77,.3);
+  flex-shrink: 0;
+}
+.vinyl-disc.playing {
+  animation-play-state: running;
+}
+@keyframes spinVinyl {
+  to { transform: rotate(360deg); }
+}
+.vinyl-inner {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FCE7F3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Info do player */
+.player-info { flex: 1; min-width: 0; }
+.player-song-title {
+  font-family: 'Playfair Display', serif;
+  font-size: .82rem;
+  font-weight: 600;
+  color: #9D174D;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-song-artist {
+  font-size: .7rem;
+  color: #F9A8D4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+
+/* Barra de progresso */
+.progress-bar-bg {
+  height: 3px;
+  background: #FBCFE8;
+  border-radius: 99px;
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #BE185D, #F472B6);
+  border-radius: 99px;
+  width: 0%;
+  transition: width .5s linear;
+}
+
+/* Controles */
+.player-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ctrl-btn {
+  color: #9D174D;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  transition: transform .15s;
+}
+.ctrl-btn:hover { transform: scale(1.2); }
+
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  background: #FBCFE8;
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+  flex: 1;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #BE185D;
+  cursor: pointer;
+}
+.volume-slider::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #BE185D;
+  cursor: pointer;
+  border: none;
+}
+
+/* Botão "Por que essa música?" */
+.why-btn {
+  background: none;
+  border: 1px solid #FBCFE8;
+  color: #F472B6;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: .75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .2s, color .2s;
+}
+.why-btn:hover { background: #FCE7F3; color: #9D174D; }
+
+/* Balão explicativo */
+.why-song-card {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  background: white;
+  border: 1px solid #FBCFE8;
+  border-radius: 16px;
+  padding: 16px;
+  max-width: 260px;
+  box-shadow: 0 8px 24px rgba(157,23,77,.12);
+  animation: fadeInUp .3s ease;
+}
+.close-why-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #F9A8D4;
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LINHA DO TEMPO
+   ══════════════════════════════════════════════════════════ */
+.timeline-section {
+  background: linear-gradient(180deg, #FCE7F3 0%, #FFF1F2 100%);
+}
+
+/* Linha vertical central */
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, #FBCFE8 10%, #FBCFE8 90%, transparent);
+  transform: translateX(-50%);
+}
+
+/* Cada card da timeline */
+.timeline-card {
+  position: relative;
+  width: calc(50% - 32px);
+  margin-bottom: 56px;
+  opacity: 0;
+  transition: opacity .7s ease, transform .7s ease;
+}
+.timeline-card.left  { margin-left: 0; transform: translateX(-40px); }
+.timeline-card.right { margin-left: calc(50% + 32px); transform: translateX(40px); }
+.timeline-card.visible { opacity: 1; transform: translateX(0); }
+
+/* Ponto na linha do tempo */
+.timeline-card::before {
+  content: '♥';
+  position: absolute;
+  top: 24px;
+  font-size: .85rem;
+  color: #BE185D;
+  background: #FCE7F3;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #FBCFE8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 28px;
+  text-align: center;
+}
+.timeline-card.left::before  { right: -46px; }
+.timeline-card.right::before { left: -46px;  }
+
+/* Inner do card */
+.card-inner {
+  background: white;
+  border: 1px solid #FBCFE8;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(157,23,77,.06);
+  transition: box-shadow .3s, transform .3s;
+}
+.card-inner:hover {
+  box-shadow: 0 8px 36px rgba(157,23,77,.14);
+  transform: translateY(-3px);
+}
+
+/* Foto do card */
+.card-photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+  background: linear-gradient(135deg, #FCE7F3, #FBCFE8);
+}
+.card-photo-placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+/* Conteúdo textual do card */
+.card-body { padding: 16px; }
+.card-tag {
+  font-size: .65rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #F9A8D4;
+  margin-bottom: 4px;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #9D174D;
+  margin-bottom: 6px;
+}
+.card-text {
+  font-family: Inter, sans-serif;
+  font-size: .78rem;
+  color: #BE185D;
+  line-height: 1.6;
+  opacity: .85;
+}
+
+/* Responsivo: timeline em coluna única abaixo de 640px */
+@media (max-width: 640px) {
+  .timeline-line { left: 16px; }
+  .timeline-card {
+    width: calc(100% - 48px);
+    margin-left: 48px !important;
+  }
+  .timeline-card.left  { transform: translateX(20px); }
+  .timeline-card.right { transform: translateX(20px); }
+  .timeline-card.left::before,
+  .timeline-card.right::before {
+    left: -36px;
+    right: auto;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   PRÓXIMO CAPÍTULO
+   ══════════════════════════════════════════════════════════ */
+.next-chapter-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 48px;
+  background: linear-gradient(135deg, #BE185D 0%, #9D174D 100%);
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  letter-spacing: .06em;
+  border: none;
+  border-radius: 99px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(157,23,77,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+.next-chapter-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 14px 40px rgba(157,23,77,.4);
+}
+.next-chapter-btn-shine {
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+  transform: skewX(-20deg);
+  animation: shineBtn 3s ease-in-out infinite;
+}
+@keyframes shineBtn {
+  0%   { left: -100%; }
+  40%, 100% { left: 160%; }
+}
+
+/* Card surpresa */
+.surprise-card {
+  animation: fadeInUp .6s ease;
+}
+.surprise-inner {
+  background: white;
+  border: 1px solid #FBCFE8;
+  border-radius: 24px;
+  padding: 32px 28px;
+  box-shadow: 0 12px 48px rgba(157,23,77,.1);
+}
+
+/* ══════════════════════════════════════════════════════════
+   CORAÇÕES FLUTUANTES (Canvas)
+   ══════════════════════════════════════════════════════════ */
+/* O canvas em si é estilizado inline via JS / Tailwind */
+
+/* ══════════════════════════════════════════════════════════
+   UTILITÁRIOS
+   ══════════════════════════════════════════════════════════ */
+.hidden { display: none !important; }
